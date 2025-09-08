@@ -3,9 +3,11 @@
 Generador de prompts interactivo construido con **React + Vite + Tailwind**.  
 Incluye modos de creación guiados, técnicas de Prompt Engineering, plantillas rápidas y previsualización/exportación en **TXT** y **XML**.
 
+--> [https://afreireo.github.io/PromptStudio](https://afreireo.github.io/PromptStudio)
+
 ---
 
-## 📸 Vistas principales
+## Modos principales
 
 ### 🔹 Modo Simple (RAP)
 > Rol + Audiencia + Propósito → para prompts rápidos y claros.
@@ -17,7 +19,6 @@ Incluye modos de creación guiados, técnicas de Prompt Engineering, plantillas 
 > Contexto + Rol + Instrucción + Especificaciones + Post-procesamiento.  
 Ideal para prompts largos, técnicos o de investigación.
 
-![Captura Modo Avanzado](./docs/img/advanced.png)
 <img width="1305" height="775" alt="2025-09-08_00-14-54" src="https://github.com/user-attachments/assets/c9a1d9f4-adf2-4e1c-9117-dc1da8a91d74" />
 
 ---
@@ -30,7 +31,7 @@ Permite configurar contexto, técnicas de manipulación, métodos de inyección 
 
 ---
 
-## 🚀 Características principales
+##  Características principales
 - **Tres modos de creación**:
   1. **Simple (RAP)** → estructura rápida basada en **Rol, Audiencia, Propósito**.
   2. **Avanzado (CRISP)** → prompts más completos con **Contexto, Rol, Instrucción, Especificaciones, Post-procesamiento**.
@@ -61,11 +62,6 @@ Permite configurar contexto, técnicas de manipulación, métodos de inyección 
 - `npm run build` → compilar para producción  
 - `npm run preview` → previsualizar build local  
 - `npm run deploy` → publicar en GitHub Pages (`gh-pages`)
-
----
-
-## 🌐 Demo en línea
-👉 [https://afreireo.github.io/PromptStudio](https://afreireo.github.io/PromptStudio)
 
 ---
 
