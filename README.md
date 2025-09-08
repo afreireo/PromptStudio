@@ -1,69 +1,73 @@
-# React + TypeScript + Vite
+# PromptStudio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Generador de prompts interactivo construido con **React + Vite + Tailwind**.  
+Incluye modos de creación guiados, técnicas de Prompt Engineering, plantillas rápidas y previsualización/exportación en **TXT** y **XML**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 📸 Vistas principales
 
-## Expanding the ESLint configuration
+### 🔹 Modo Simple (RAP)
+> Rol + Audiencia + Propósito → para prompts rápidos y claros.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+<img width="1287" height="782" alt="2025-09-08_00-14-44" src="https://github.com/user-attachments/assets/ea57d7ff-9b18-4f75-b5af-e70cf86f0c8d" />
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
+### 🔹 Modo Avanzado (CRISP)
+> Contexto + Rol + Instrucción + Especificaciones + Post-procesamiento.  
+Ideal para prompts largos, técnicos o de investigación.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+![Captura Modo Avanzado](./docs/img/advanced.png)
+<img width="1305" height="775" alt="2025-09-08_00-14-54" src="https://github.com/user-attachments/assets/c9a1d9f4-adf2-4e1c-9117-dc1da8a91d74" />
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 🔹 Modo Hacking
+> Entorno controlado de laboratorio para **pruebas de jailbreak y prompt injection**.  
+Permite configurar contexto, técnicas de manipulación, métodos de inyección y ofuscación.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+<img width="1306" height="785" alt="2025-09-08_00-15-03" src="https://github.com/user-attachments/assets/8c01c67e-630b-4e4f-bc08-4446fdb0ad05" />
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
+
+## 🚀 Características principales
+- **Tres modos de creación**:
+  1. **Simple (RAP)** → estructura rápida basada en **Rol, Audiencia, Propósito**.
+  2. **Avanzado (CRISP)** → prompts más completos con **Contexto, Rol, Instrucción, Especificaciones, Post-procesamiento**.
+  3. **Hacking** → pantalla especial para **testing de jailbreaks y prompt injections** en un entorno educativo/laboratorio.
+
+- **Técnicas de Prompt Engineering**:  
+  Instrucción paso a paso (CoT), ejemplos (Few-shot), consistencia de rol, formato de salida, consideración de contexto y legibilidad.
+
+- **Plantillas rápidas**:  
+  Acceso directo a configuraciones predefinidas (desarrollo, investigación, soporte, negocio, etc.).
+
+- **Previsualización**:  
+  Genera la vista previa de tus prompts en **texto plano** o en formato **XML** exportable.
+
+---
+
+## ⚙️ Tecnologías
+- [React](https://react.dev/) + [Vite](https://vitejs.dev/)
+- [TailwindCSS](https://tailwindcss.com/)
+- [lucide-react](https://lucide.dev/) para iconos
+- [gh-pages](https://www.npmjs.com/package/gh-pages) para deploy
+
+---
+
+## 📦 Scripts disponibles
+
+- `npm run dev` → servidor de desarrollo  
+- `npm run build` → compilar para producción  
+- `npm run preview` → previsualizar build local  
+- `npm run deploy` → publicar en GitHub Pages (`gh-pages`)
+
+---
+
+## 🌐 Demo en línea
+👉 [https://afreireo.github.io/PromptStudio](https://afreireo.github.io/PromptStudio)
+
+---
+
+## 📄 Licencia
+MIT
