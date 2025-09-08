@@ -269,14 +269,16 @@ export default function PromptStudio(){
         {/* Formulario + Plantillas */}
         <section className="col-span-12 lg:col-span-6 space-y-4">
           <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-md">
-            <div className="flex items-center justify-between">
-              <h2 className="text-sm font-semibold">
-                {mode === 'simple' ? tt('mode_simple') : mode === 'avanzado' ? tt('mode_advanced') : tt('mode_hacking')}
-              </h2>
-              <div className="text-xs text-slate-500 flex items-center gap-1">
-                <ChevronDown size={14}/> {tt('techniques')}
-              </div>
-            </div>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold">
+              {mode === 'simple'
+                ? tt('mode_simple')
+                : mode === 'avanzado'
+                ? tt('mode_advanced')
+                : tt('mode_hacking')}
+            </h2>
+          </div>
+
 
             {/* Barra de plantillas según modo */}
             {mode === 'simple' && <QuickTemplatesSimple onApply={applySimpleTemplate} />}
