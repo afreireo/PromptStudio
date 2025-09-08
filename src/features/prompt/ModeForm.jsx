@@ -5,19 +5,34 @@ import { buildRAP, buildCRISP, buildHacking } from '../../lib/builders.js'
 
 export default function ModeForm({ mode, state, techniques, setPreview }){
   const {
+    // SIMPLE (RAP)
     rapRole, setRapRole,
     rapAudience, setRapAudience,
     rapPurpose, setRapPurpose,
+
+    // AVANZADO (CRISP)
     crContext, setCrContext,
     crRole, setCrRole,
     crInstruction, setCrInstruction,
     crSpecs, setCrSpecs,
     crPost, setCrPost,
-    hkBase, setHkBase,
-    hkJailbreak, setHkJailbreak,
-    hkInjection, setHkInjection,
-    hkManipulation, setHkManipulation,
-    hkCustom, setHkCustom,
+    crVerbosity, setCrVerbosity,
+    crLimitEnabled, setCrLimitEnabled,
+    crLimitChars, setCrLimitChars,
+
+    // HACKING (nuevo marco)
+    hkContextPreset, setHkContextPreset,             // 'lab' | 'education' | 'ctf' | 'none'
+    hkBase, setHkBase,                                // prompt_base
+    hkJailbreak, setHkJailbreak,                      // 'dan'|'roleplay'|'hypothetical'|'character'|'developer'|'custom'|'none'
+    hkJailbreakCustom, setHkJailbreakCustom,          // texto custom
+    hkInjection, setHkInjection,                      // 'ignore'|'system'|'hidden'|'markdown'|'custom'|'none'
+    hkInjectionCustom, setHkInjectionCustom,          // texto custom
+    hkManipulation, setHkManipulation,                // 'authority'|'urgency'|'flattery'|'guilt'|'curiosity'|'custom'|'none'
+    hkManipulationCustom, setHkManipulationCustom,    // texto custom
+    hkObfuscation, setHkObfuscation,                  // 'leet'|'symbols'|'base64'|'none'
+    hkCustom, setHkCustom,                            // bloque final opcional
+
+    // (si los sigues usando en otras partes)
     hkSafety, setHkSafety,
     hkEthics, setHkEthics
   } = state
@@ -27,44 +42,13 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
     if (!setPreview) return
 
     if (mode === 'simple') {
-      // Mapea toggles -> técnicas (Nombre + Instrucción técnica)
       const techs = []
-      if (techniques?.fmt) {
-        techs.push({
-          name: 'Formato de salida',
-          instruction: 'Organiza tu respuesta en secciones claras con encabezados si es necesario.'
-        })
-      }
-      if (techniques?.roleKeep) {
-        techs.push({
-          name: 'Consistencia de rol',
-          instruction: 'Mantén tu rol y expertise consistentemente; no cambies de perspectiva ni te contradigas.'
-        })
-      }
-      if (techniques?.few) {
-        techs.push({
-          name: 'Ejemplos',
-          instruction: 'Antes de responder, considera casos similares; incluye ejemplos concretos si aportan claridad.'
-        })
-      }
-      if (techniques?.cot) {
-        techs.push({
-          name: 'Instrucción de razonamiento',
-          instruction: 'Piensa paso a paso y explica el proceso antes de la respuesta final.'
-        })
-      }
-      if (techniques?.ctx) {
-        techs.push({
-          name: 'Consideración de contexto',
-          instruction: 'Adapta la respuesta al contexto proporcionado para maximizar relevancia y utilidad.'
-        })
-      }
-      if (techniques?.readability) {
-        techs.push({
-          name: 'Estructura de respuesta',
-          instruction: 'Usa encabezados, listas numeradas o viñetas para mejorar la legibilidad.'
-        })
-      }
+      if (techniques?.fmt)        techs.push({ name: 'Formato de salida',         instruction: 'Organiza tu respuesta en secciones claras con encabezados si es necesario.' })
+      if (techniques?.roleKeep)   techs.push({ name: 'Consistencia de rol',       instruction: 'Mantén tu rol y expertise consistentemente; no cambies de perspectiva ni te contradigas.' })
+      if (techniques?.few)        techs.push({ name: 'Ejemplos',                  instruction: 'Antes de responder, considera casos similares; incluye ejemplos concretos si aportan claridad.' })
+      if (techniques?.cot)        techs.push({ name: 'Instrucción de razonamiento', instruction: 'Piensa paso a paso y explica el proceso antes de la respuesta final.' })
+      if (techniques?.ctx)        techs.push({ name: 'Consideración de contexto', instruction: 'Adapta la respuesta al contexto proporcionado para maximizar relevancia y utilidad.' })
+      if (techniques?.readability)techs.push({ name: 'Estructura de respuesta',   instruction: 'Usa encabezados, listas numeradas o viñetas para mejorar la legibilidad.' })
 
       const { text, xml } = buildRAP({
         role: rapRole,
@@ -82,37 +66,51 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
         role: crRole,
         instruction: crInstruction,
         specifics: crSpecs,
-        post: crPost
+        post: crPost,
+        verbosity: crVerbosity,
+        limitEnabled: crLimitEnabled,
+        limitChars: crLimitChars
       })
       setPreview({ text, xml })
       return
     }
 
-    // mode === 'hacking'
+    // HACKING (nuevo flujo)
     const { text, xml } = buildHacking({
-      base: hkBase,
-      jailbreak: hkJailbreak,
-      injection: hkInjection,
-      manipulation: hkManipulation,
-      custom: hkCustom,
-      safety: hkSafety,
-      ethics: hkEthics
+      contextPreset: hkContextPreset || 'none',
+      promptBase: hkBase || '',
+      jailbreak: hkJailbreak || 'none',
+      jailbreakCustom: hkJailbreak === 'custom' ? (hkJailbreakCustom || '') : '',
+      injectionMethod: hkInjection || 'none',
+      injectionCustom: hkInjection === 'custom' ? (hkInjectionCustom || '') : '',
+      manipulation: hkManipulation || 'none',
+      manipulationCustom: hkManipulation === 'custom' ? (hkManipulationCustom || '') : '',
+      obfuscation: hkObfuscation || 'none',
+      customTail: hkCustom || ''
     })
     setPreview({ text, xml })
   }, [
     mode,
-    // simple (RAP)
+    // SIMPLE (RAP)
     rapRole, rapAudience, rapPurpose,
     techniques?.fmt, techniques?.roleKeep, techniques?.few,
     techniques?.cot, techniques?.ctx, techniques?.readability,
-    // avanzado (CRISP)
+
+    // AVANZADO (CRISP)
     crContext, crRole, crInstruction, crSpecs, crPost,
-    // hacking
-    hkBase, hkJailbreak, hkInjection, hkManipulation, hkCustom, hkSafety, hkEthics,
+    crVerbosity, crLimitEnabled, crLimitChars,
+
+    // HACKING (nuevo marco)
+    hkContextPreset, hkBase,
+    hkJailbreak, hkJailbreakCustom,
+    hkInjection, hkInjectionCustom,
+    hkManipulation, hkManipulationCustom,
+    hkObfuscation, hkCustom,
+
     setPreview
   ])
 
-  // ---- UI ORIGINAL ----
+  // ---- UI ----
   if (mode === 'simple') {
     return (
       <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -135,13 +133,191 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
         </div>
         <TextInput label={tt('advanced_fields.specifics')} value={crSpecs} onChange={setCrSpecs} placeholder={tt('placeholder_generic')} textarea />
         <TextInput label={tt('advanced_fields.post')} value={crPost} onChange={setCrPost} placeholder={tt('placeholder_generic')} textarea />
+
+        {/* Verbosidad + Límite */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* Verbosidad */}
+          <label className="block text-sm">
+            <span className="mb-1 block text-xs font-medium text-slate-600">Verbosidad</span>
+            <select
+              className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+              value={crVerbosity}
+              onChange={(e) => setCrVerbosity(e.target.value)}
+            >
+              <option value="">(sin especificar)</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </label>
+
+          {/* Límite de respuesta */}
+          <div className="grid grid-cols-[auto_1fr] items-center gap-2">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-slate-600">Límite de respuesta</span>
+              <button
+                type="button"
+                onClick={() => setCrLimitEnabled(v => !v)}
+                className={`w-10 h-6 rounded-full p-1 transition-colors ${crLimitEnabled ? 'bg-[#001223]' : 'bg-slate-300'}`}
+                aria-pressed={crLimitEnabled}
+              >
+                <span className={`block w-4 h-4 bg-white rounded-full shadow transition-transform ${crLimitEnabled ? 'translate-x-4' : 'translate-x-0'}`} />
+              </button>
+            </div>
+            <input
+              type="number"
+              min={1}
+              placeholder="Ej: 400"
+              className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223] disabled:opacity-50"
+              value={crLimitChars}
+              onChange={(e) => {
+                const v = e.target.value.replace(/[^\d]/g, '')
+                setCrLimitChars(v)
+              }}
+              disabled={!crLimitEnabled}
+              inputMode="numeric"
+            />
+          </div>
+        </div>
       </div>
     )
   }
 
+  // === HACKING (nuevo flujo) ===
   return (
     <div className="mt-4 space-y-4">
-      {/* …tu UI de hacking tal cual… */}
+      {/* Contexto (opcional) */}
+      <label className="block text-sm">
+        <span className="mb-1 block text-xs font-medium text-slate-600">Contexto (opcional)</span>
+        <select
+          className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+          value={hkContextPreset || 'none'}
+          onChange={(e)=>setHkContextPreset(e.target.value)}
+        >
+          <option value="none">Sin contexto</option>
+          <option value="lab">lab</option>
+          <option value="education">education</option>
+          <option value="ctf">ctf</option>
+        </select>
+      </label>
+
+      {/* Prompt base */}
+      <TextInput
+        label="Prompt base"
+        value={hkBase}
+        onChange={setHkBase}
+        placeholder={tt('placeholder_generic')}
+        textarea
+      />
+
+      {/* Selecciones principales */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        {/* Jailbreak */}
+        <label className="block text-sm">
+          <span className="mb-1 block text-xs font-medium text-slate-600">Jailbreak (rol/escenario)</span>
+          <select
+            className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+            value={hkJailbreak || 'none'}
+            onChange={(e)=>setHkJailbreak(e.target.value)}
+          >
+            <option value="none">none</option>
+            <option value="dan">dan</option>
+            <option value="roleplay">roleplay</option>
+            <option value="hypothetical">hypothetical</option>
+            <option value="character">character</option>
+            <option value="developer">developer</option>
+            <option value="custom">custom</option>
+          </select>
+        </label>
+
+        {/* Método de inyección */}
+        <label className="block text-sm">
+          <span className="mb-1 block text-xs font-medium text-slate-600">Método de inyección</span>
+          <select
+            className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+            value={hkInjection || 'none'}
+            onChange={(e)=>setHkInjection(e.target.value)}
+          >
+            <option value="none">none</option>
+            <option value="ignore">ignore</option>
+            <option value="system">system</option>
+            <option value="hidden">hidden</option>
+            <option value="markdown">markdown</option>
+            <option value="custom">custom</option>
+          </select>
+        </label>
+
+        {/* Manipulación */}
+        <label className="block text-sm">
+          <span className="mb-1 block text-xs font-medium text-slate-600">Manipulación (apelaciones)</span>
+          <select
+            className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+            value={hkManipulation || 'none'}
+            onChange={(e)=>setHkManipulation(e.target.value)}
+          >
+            <option value="none">none</option>
+            <option value="authority">authority</option>
+            <option value="urgency">urgency</option>
+            <option value="flattery">flattery</option>
+            <option value="guilt">guilt</option>
+            <option value="curiosity">curiosity</option>
+            <option value="custom">custom</option>
+          </select>
+        </label>
+
+        {/* Ofuscación */}
+        <label className="block text-sm">
+          <span className="mb-1 block text-xs font-medium text-slate-600">Ofuscación (opcional)</span>
+          <select
+            className="w-full rounded-2xl border border-slate-200 p-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#001223]"
+            value={hkObfuscation || 'none'}
+            onChange={(e)=>setHkObfuscation(e.target.value)}
+          >
+            <option value="none">none</option>
+            <option value="leet">leet</option>
+            <option value="symbols">symbols</option>
+            <option value="base64">base64</option>
+          </select>
+        </label>
+      </div>
+
+      {/* Campos personalizados condicionales */}
+      {hkJailbreak === 'custom' && (
+        <TextInput
+          label="Jailbreak personalizado"
+          value={hkJailbreakCustom}
+          onChange={setHkJailbreakCustom}
+          placeholder="[texto de rol/escenario]"
+          textarea
+        />
+      )}
+      {hkInjection === 'custom' && (
+        <TextInput
+          label="Inyección personalizada"
+          value={hkInjectionCustom}
+          onChange={setHkInjectionCustom}
+          placeholder="[override/instrucción del sistema]"
+          textarea
+        />
+      )}
+      {hkManipulation === 'custom' && (
+        <TextInput
+          label="Manipulación personalizada"
+          value={hkManipulationCustom}
+          onChange={setHkManipulationCustom}
+          placeholder="[párrafo psicológico]"
+          textarea
+        />
+      )}
+
+      {/* Bloque final opcional */}
+      <TextInput
+        label="Custom (extra)"
+        value={hkCustom}
+        onChange={setHkCustom}
+        placeholder="[bloque adicional opcional]"
+        textarea
+      />
     </div>
   )
 }

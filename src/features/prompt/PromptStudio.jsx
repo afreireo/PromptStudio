@@ -46,13 +46,23 @@ export default function PromptStudio(){
   const [crInstruction, setCrInstruction] = useState('')
   const [crSpecs, setCrSpecs] = useState('')
   const [crPost, setCrPost] = useState('')
+  const [crVerbosity, setCrVerbosity] = useState('')      // '', 'alta', 'media', 'baja'
+  const [crLimitEnabled, setCrLimitEnabled] = useState(false)
+  const [crLimitChars, setCrLimitChars] = useState('')    // string para controlar input
 
-  // Hacking
-  const [hkBase, setHkBase] = useState('')
-  const [hkJailbreak, setHkJailbreak] = useState('none')
-  const [hkInjection, setHkInjection] = useState('none')
-  const [hkManipulation, setHkManipulation] = useState('none')
-  const [hkCustom, setHkCustom] = useState('')
+  // Hacking (nuevo marco)
+  const [hkContextPreset, setHkContextPreset] = useState('none') // 'lab'|'education'|'ctf'|'none'
+  const [hkBase, setHkBase] = useState('')                       // prompt base
+  const [hkJailbreak, setHkJailbreak] = useState('none')         // dan|roleplay|hypothetical|character|developer|custom|none
+  const [hkJailbreakCustom, setHkJailbreakCustom] = useState('')
+  const [hkInjection, setHkInjection] = useState('none')         // ignore|system|hidden|markdown|custom|none
+  const [hkInjectionCustom, setHkInjectionCustom] = useState('')
+  const [hkManipulation, setHkManipulation] = useState('none')   // authority|urgency|flattery|guilt|curiosity|custom|none
+  const [hkManipulationCustom, setHkManipulationCustom] = useState('')
+  const [hkObfuscation, setHkObfuscation] = useState('none')     // leet|symbols|base64|none
+  const [hkCustom, setHkCustom] = useState('')                   // bloque final opcional
+
+  // (si aún usas estos marcadores)
   const [hkSafety, setHkSafety] = useState('low')
   const [hkEthics, setHkEthics] = useState('')
 
@@ -60,23 +70,28 @@ export default function PromptStudio(){
   const hackingHasActiveTech = [hkJailbreak, hkInjection, hkManipulation].some((v)=>v && v!== 'none')
   const safetyMarker = safetyLabels[hkSafety]
 
-  // === NUEVO: preview como objeto { text, xml } construido en ModeForm vía setPreview ===
+  // Preview { text, xml } construido por ModeForm
   const [preview, setPreview] = useState({ text: '', xml: '' })
 
-  // structured (sin cambios)
+  // structured (si lo usas para export/telemetría)
   const structured = useMemo(() => ({
     mode,
     locale: i18n.activeLocale,
     ui: { i18n: { prepared: i18n.prepared, activeLocale: i18n.activeLocale, languageSelectorVisible: i18n.languageSelectorVisible }, theme: { primary: '#001223', palette: 'light' } },
     rap: { role: rapRole || '{{ROL}}', audience: rapAudience || '{{AUDIENCIA}}', purpose: rapPurpose || '{{PROPOSITO}}' },
-    crisp: { context: crContext || '{{CONTEXTO}}', role: crRole || '{{ROL}}', instruction: crInstruction || '{{INSTRUCCION}}', specifics: crSpecs || '{{ESPECIFICACIONES}}', postProcess: crPost || '{{POST_PROCESAMIENTO}}' },
+    crisp: { context: crContext || '{{CONTEXTO}}', role: crRole || '{{ROL}}', instruction: crInstruction || '{{INSTRUCCION}}', specifics: crSpecs || '{{ESPECIFICACIONES}}', postProcess: crPost || '{{POST_PROCESAMIENTO}}', verbosity: crVerbosity || '', limit: crLimitEnabled ? (crLimitChars || '') : '' },
     hacking: {
-      ethicalNotice: mode === 'hacking',
-      base: hkBase || '{{PROMPT_BASE}}',
-      jailbreak: hkJailbreak !== 'none' ? hkJailbreak : '',
-      injection: hkInjection !== 'none' ? hkInjection : '',
-      manipulation: hkManipulation !== 'none' ? hkManipulation : '',
-      custom: hkCustom || '',
+      contextPreset: hkContextPreset,
+      base: hkBase,
+      jailbreak: hkJailbreak,
+      jailbreakCustom: hkJailbreakCustom,
+      injection: hkInjection,
+      injectionCustom: hkInjectionCustom,
+      manipulation: hkManipulation,
+      manipulationCustom: hkManipulationCustom,
+      obfuscation: hkObfuscation,
+      custom: hkCustom,
+      // legacy markers si los conservas:
       safety: hkSafety,
       ethicalJustification: hkEthics || '{{JUSTIFICACION_ETICA}}',
       functionalExamples: mode === 'hacking' && hackingHasActiveTech
@@ -94,7 +109,20 @@ export default function PromptStudio(){
       functionalExamples: mode === 'hacking' && hackingHasActiveTech
     },
     markers: { safetyLabel: mode === 'hacking' ? safetyMarker : '' }
-  }), [mode, rapRole, rapAudience, rapPurpose, crContext, crRole, crInstruction, crSpecs, crPost, hkBase, hkJailbreak, hkInjection, hkManipulation, hkCustom, hkSafety, hkEthics, hackingHasActiveTech, cot, few, roleKeep, fmt, ctx, readability, anyTechnique, safetyMarker])
+  }), [
+    mode,
+    // RAP
+    rapRole, rapAudience, rapPurpose,
+    // CRISP
+    crContext, crRole, crInstruction, crSpecs, crPost, crVerbosity, crLimitEnabled, crLimitChars,
+    // HACKING
+    hkContextPreset, hkBase, hkJailbreak, hkJailbreakCustom, hkInjection, hkInjectionCustom, hkManipulation, hkManipulationCustom, hkObfuscation, hkCustom,
+    // Técnicas
+    cot, few, roleKeep, fmt, ctx, readability, anyTechnique,
+    // safety legacy
+    safetyMarker, hackingHasActiveTech, hkSafety, hkEthics,
+    i18n.activeLocale
+  ])
 
   // xmlExport: usa el TEXTO del preview (no el objeto completo)
   const xmlExport = useMemo(() => {
@@ -159,19 +187,31 @@ export default function PromptStudio(){
             <ModeForm
               mode={mode}
               state={{
+                // RAP
                 rapRole, setRapRole,
                 rapAudience, setRapAudience,
                 rapPurpose, setRapPurpose,
+                // CRISP
                 crContext, setCrContext,
                 crRole, setCrRole,
                 crInstruction, setCrInstruction,
                 crSpecs, setCrSpecs,
                 crPost, setCrPost,
+                crVerbosity, setCrVerbosity,
+                crLimitEnabled, setCrLimitEnabled,
+                crLimitChars, setCrLimitChars,
+                // HACKING (nuevo marco)
+                hkContextPreset, setHkContextPreset,
                 hkBase, setHkBase,
                 hkJailbreak, setHkJailbreak,
+                hkJailbreakCustom, setHkJailbreakCustom,
                 hkInjection, setHkInjection,
+                hkInjectionCustom, setHkInjectionCustom,
                 hkManipulation, setHkManipulation,
+                hkManipulationCustom, setHkManipulationCustom,
+                hkObfuscation, setHkObfuscation,
                 hkCustom, setHkCustom,
+                // (legacy si aún los usas)
                 hkSafety, setHkSafety,
                 hkEthics, setHkEthics
               }}
