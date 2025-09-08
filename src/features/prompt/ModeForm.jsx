@@ -1,3 +1,4 @@
+// src/views/PromptStudio/ModeForm.jsx
 import React from 'react'
 import TextInput from '../../components/TextInput.jsx'
 import { tt } from '../../lib/i18n.js'
@@ -30,11 +31,7 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
     hkManipulation, setHkManipulation,                // 'authority'|'urgency'|'flattery'|'guilt'|'curiosity'|'custom'|'none'
     hkManipulationCustom, setHkManipulationCustom,    // texto custom
     hkObfuscation, setHkObfuscation,                  // 'leet'|'symbols'|'base64'|'none'
-    hkCustom, setHkCustom,                            // bloque final opcional
-
-    // (si los sigues usando en otras partes)
-    hkSafety, setHkSafety,
-    hkEthics, setHkEthics
+    hkCustom, setHkCustom                             // bloque final opcional
   } = state
 
   // --- Construcción del preview por modo ---
