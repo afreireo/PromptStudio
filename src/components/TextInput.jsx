@@ -7,7 +7,7 @@ export default function TextInput({ label, value, onChange, placeholder, textare
     <label className="block space-y-1">
       <span className="text-xs font-medium text-slate-600">{label}</span>
       {textarea ? (
-        <textarea value={value} onChange={(e)=>onChange(e.target.value)} placeholder={placeholder} className={classNames(base, 'p-3 min-h-[120px]')} />
+        <textarea value={value} onChange={(e)=>onChange(e.target.value)} placeholder={placeholder} className={classNames(base, 'p-3 min-h-[50px]')} />
       ) : (
         <input value={value} onChange={(e)=>onChange(e.target.value)} placeholder={placeholder} className={classNames(base, 'p-3')} />
       )}

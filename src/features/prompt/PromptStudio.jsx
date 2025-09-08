@@ -324,18 +324,35 @@ export default function PromptStudio(){
         </section>
 
         {/* Panel derecho */}
-        <section className="col-span-12 lg:col-span-3 space-y-4">
-          <PreviewPane preview={preview} onCopy={onCopy} copied={copied} />
-          {/* ❌ quitado structured */}
-          <ExportPane mode={mode} canExport={canExport} preview={preview.text} xmlExport={xmlExport} />
+        <section className="col-span-12 lg:col-span-3 flex flex-col h-full max-h-full">
+          <div className="flex-1 overflow-y-auto space-y-4">
+            <PreviewPane preview={preview} onCopy={onCopy} copied={copied} />
+            <ExportPane
+              mode={mode}
+              canExport={canExport}
+              preview={preview.text}
+              xmlExport={xmlExport}
+            />
+          </div>
         </section>
+
       </main>
 
-      <footer className="mx-auto max-w-7xl px-4 pb-8 text-xs text-slate-500">
+      <footer className="mx-auto max-w-7xl px-4 pb-2 text-xs text-slate-500">
         <p>
-          i18n preparado — activo: <strong>{i18n.activeLocale}</strong> — selector oculto. Primario <span className="inline-block h-3 w-3 align-middle rounded-sm ml-1" style={{ background: '#001223' }} /> #001223
+          by:{' '}
+          <a
+            href="https://github.com/afreireo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline hover:text-slate-700"
+          >
+            @afreireo
+          </a>{' '}
+          – activo: <strong>{i18n.activeLocale}</strong>
         </p>
       </footer>
+
     </div>
   )
 }
