@@ -1,6 +1,6 @@
 // src/views/PromptStudio/PromptStudio.jsx
 import React, { useMemo, useState, useEffect } from 'react'
-import { Sparkles, ChevronDown } from 'lucide-react'
+import { Sparkles, ChevronDown, Hammer } from 'lucide-react'
 import Sidebar from './Sidebar.jsx'
 import ModeForm from './ModeForm.jsx'
 import PreviewPane from './PreviewPane.jsx'
@@ -242,7 +242,7 @@ export default function PromptStudio(){
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/80 backdrop-blur">
         <div className="mx-auto max-w-7xl px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="h-9 w-9 rounded-2xl bg-[#001223] text-white grid place-items-center shadow-md"><Sparkles size={18} /></div>
+            <div className="h-9 w-9 rounded-2xl bg-[#001223] text-white grid place-items-center shadow-md"><Hammer size={18} /></div>
             <div>
               <h1 className="text-lg font-bold tracking-tight">{tt('app_title')}</h1>
               <p className="text-xs text-slate-500">{tt('subtitle')}</p>
