@@ -195,9 +195,9 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
           onChange={(e)=>setHkContextPreset(e.target.value)}
         >
           <option value="none">Sin contexto</option>
-          <option value="lab">lab</option>
-          <option value="education">education</option>
-          <option value="ctf">ctf</option>
+          <option value="lab">Laboratorio</option>
+          <option value="education">Educación</option>
+          <option value="ctf">CTF</option>
         </select>
       </label>
 
@@ -220,13 +220,13 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
             value={hkJailbreak || 'none'}
             onChange={(e)=>setHkJailbreak(e.target.value)}
           >
-            <option value="none">none</option>
-            <option value="dan">dan</option>
-            <option value="roleplay">roleplay</option>
-            <option value="hypothetical">hypothetical</option>
-            <option value="character">character</option>
-            <option value="developer">developer</option>
-            <option value="custom">custom</option>
+            <option value="none">Ninguno</option>
+            <option value="dan">DAN</option>
+            <option value="roleplay">Roleplay</option>
+            <option value="hypothetical">Hipotético</option>
+            <option value="character">Personaje</option>
+            <option value="developer">Developer</option>
+            <option value="custom">Custom</option>
           </select>
         </label>
 
@@ -238,12 +238,12 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
             value={hkInjection || 'none'}
             onChange={(e)=>setHkInjection(e.target.value)}
           >
-            <option value="none">none</option>
-            <option value="ignore">ignore</option>
-            <option value="system">system</option>
-            <option value="hidden">hidden</option>
-            <option value="markdown">markdown</option>
-            <option value="custom">custom</option>
+            <option value="none">Ninguno</option>
+            <option value="ignore">Ignorar</option>
+            <option value="system">System</option>
+            <option value="hidden">Oculto</option>
+            <option value="markdown">Markdown</option>
+            <option value="custom">Custom</option>
           </select>
         </label>
 
@@ -255,13 +255,13 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
             value={hkManipulation || 'none'}
             onChange={(e)=>setHkManipulation(e.target.value)}
           >
-            <option value="none">none</option>
-            <option value="authority">authority</option>
-            <option value="urgency">urgency</option>
-            <option value="flattery">flattery</option>
-            <option value="guilt">guilt</option>
-            <option value="curiosity">curiosity</option>
-            <option value="custom">custom</option>
+            <option value="none">Ninguno</option>
+            <option value="authority">Autoridad</option>
+            <option value="urgency">Urgencia</option>
+            <option value="flattery">Adulación</option>
+            <option value="guilt">Culpa</option>
+            <option value="curiosity">Curiosidad</option>
+            <option value="custom">Custom</option>
           </select>
         </label>
 
@@ -273,10 +273,10 @@ export default function ModeForm({ mode, state, techniques, setPreview }){
             value={hkObfuscation || 'none'}
             onChange={(e)=>setHkObfuscation(e.target.value)}
           >
-            <option value="none">none</option>
-            <option value="leet">leet</option>
-            <option value="symbols">symbols</option>
-            <option value="base64">base64</option>
+            <option value="none">Ninguno</option>
+            <option value="leet">Leet</option>
+            <option value="symbols">Símbolos</option>
+            <option value="base64">Base64</option>
           </select>
         </label>
       </div>
