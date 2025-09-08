@@ -65,5 +65,3 @@ Permite configurar contexto, técnicas de manipulación, métodos de inyección 
 
 ---
 
-## 📄 Licencia
-MIT
